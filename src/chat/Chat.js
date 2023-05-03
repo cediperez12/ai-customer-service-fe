@@ -4,20 +4,49 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import BubbleUser from '../components/Bubble/BubbleUser';
-import BubbleAI from '../components/Bubble/BubbleAI';
-import FormControl from '@mui/material/FormControl';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
-import { IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
+import { IconButton, InputAdornment, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
+import Conversation from './Conversation';
   
-  export default function Chat(props) {
-    const sampleMessage = `Step 1: Select the store.
-    Step 2: Scan or search the item.
-    Step 3: Review the details of your order before placing your order then click the "Check-out" button
-    Step 4: Select mode of payment then click the "Place Order" button
-    Note: For online payment: Wait for the SMS notification to complete the transaction by clicking the "Pay Now" button`;
+  export default function Chat() {
+
+    // * Sample Data * ----------------
+    const  [messages, setMessages] = React.useState([
+      { message: "Hello! Puregold", sender: "me" },
+      { message: "Hi there!", sender: "ai" },
+      { message: "How are you doing today?", sender: "ai" },
+      { message: "I'm doing great, thanks for asking!", sender: "me" },
+      { message: "That's great to hear.", sender: "ai" },
+      { message: "How do I place an order in Puregold Mobile App?", sender: "me" },
+      { message: `Step 1: Select the store.
+      Step 2: Scan or search the item.
+      Step 3: Review the details of your order before placing your order then click the "Check-out" button
+      Step 4: Select mode of payment then click the "Place Order" button
+      Note: For online payment: Wait for the SMS notification to complete the transaction by clicking the "Pay Now" button`, sender: "ai" },
+      { message: "Thank you!", sender: "me" },
+    ]);
+   
+
+    const [newMessage, setNewMessage] =  React.useState('');
+   
+    const handleSendMessage = () => {
+      const newMessages = [...messages, { message: newMessage, sender: 'me'}]
+      setMessages(newMessages);
+      setNewMessage('');
+    }
+
+    const handleEnterKey = (event, message) => {
+      if(event.keyCode === 13){
+        handleSendMessage()
+      }
+    }
+
+    const windowRef = React.useRef(null);
+    React.useEffect(() => {
+      windowRef.current.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
+
     return (
       <React.Fragment>
         <CssBaseline />
@@ -34,7 +63,6 @@ import SendIcon from '@mui/icons-material/Send';
         }}>
       
           <Box sx={{
-              
               display: "flex",
               height: 'auto',
               width: 'auto',
@@ -46,35 +74,35 @@ import SendIcon from '@mui/icons-material/Send';
         }}>
           <AppBar position='sticky' style={{marginBottom: '20px'}}>
             <Toolbar style={{backgroundColor: '#014F41'}}>
+              <SupportAgentIcon/> <span> &nbsp; </span>
               <Typography variant="h6" component="div">
                 Chat Support
               </Typography>
             </Toolbar>
           </AppBar>
-        {/* Conversation */}
-           <BubbleUser message={'How do I place an order in Puregold Mobile App?'}/>
-           <BubbleAI message={sampleMessage}/>
-           <BubbleAI message={sampleMessage}/>
-          
+
+          {/* Conversation */}
+           <Conversation messages = { messages }/>
+           <div ref={windowRef}/>
+
           </Box>
-          <FormControl fullWidth sx={{ m: 1 }}>
+         
           <TextField  sx={{ margin: 1, color:'#ffffff'}} 
-                    className  = 'textField' 
+                    className  = 'textField'
+                    value      = { newMessage }
+                    onKeyDown  = { handleEnterKey }
                     label      = 'Chat here' 
-                    // onChange   = {(e) => {}}
+                    onChange   = { (e) => { setNewMessage(e.target.value) }}
                     InputProps = {{
                       endAdornment:(
                         <InputAdornment position = 'end'>
-                        <IconButton edge = 'start'>
-                          { <SendIcon /> }
+                        <IconButton edge = 'start'   onClick ={ handleSendMessage }>
+                          { <SendIcon  /> }
                         </IconButton>
                       </InputAdornment>
-                                )
-         }}/>
-          </FormControl>
-
+                                ) 
+                }}/>
           </Box>
-      
       </React.Fragment>
     );
   }
