@@ -2,7 +2,7 @@ import './App.css'
 import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 
-import Chat from './chat/Chat'
+import Chat from './Page/Chat';
 import { Box } from '@mui/material'
 
 const App = () => {
@@ -39,6 +39,8 @@ const App = () => {
 
   //   getChimResponse(text)
   // }
+
+  
 
   // const getChimResponse = async (text) => {
   //   try {
