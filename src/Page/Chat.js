@@ -49,8 +49,7 @@ export default function Chat() {
     try {
       setIsLoading(true)
       const response = await axios.get(
-        `https://dcb5-2001-4451-70f-2600-b045-e289-ff25-367.ngrok-free.app/askchim?query=` +
-          newMessage,
+        `https://test-chim-ai-deploy.herokuapp.com/askchim?query=` + newMessage,
         {
           headers: {
             'Access-Control-Allow-Origin': '*',
