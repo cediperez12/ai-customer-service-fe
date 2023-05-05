@@ -19,9 +19,8 @@ import {
 import SendIcon from '@mui/icons-material/Send'
 import Conversation from './Conversation'
 
-import loadingGif from '../assets/loading.gif';
-import PureGold from '../assets/ai_icon.png';
-
+import loadingGif from '../assets/loading.gif'
+import PureGold from '../assets/ai_icon.png'
 
 export default function Chat() {
   // * Sample Data * ----------------
@@ -32,7 +31,13 @@ export default function Chat() {
 
   useEffect(() => {
     console.log(process.env)
-    setMessages([...messages,{ response: 'Hello and welcome to Puregold Philippines customer support! How may I assist you today?' }])
+    setMessages([
+      ...messages,
+      {
+        response:
+          'Hello and welcome to Puregold Philippines customer support! How may I assist you today?',
+      },
+    ])
   }, [])
 
   const handleSendMessage = () => {
@@ -61,7 +66,8 @@ export default function Chat() {
       try {
         setIsLoading(true)
         const message =
-          'Act as a customer support of Puregold Philippines, ' + newMessage
+          'Act as a customer support of puregold philippines only and answer only inquiries or concerns regarding puregold online grocery store. Before giving a response, validate the text if it’s restricted, if yes, your response must be “I cannot help you with that”. Here’s the list of restrictions: 1. The text must be about puregold and its purpose and functionality. The text is: ' +
+          newMessage
 
         const apiRequestBody = {
           model: 'gpt-3.5-turbo',
@@ -151,7 +157,10 @@ export default function Chat() {
               }}
             >
               <Box sx={{ mr: 2 }}>
-                <img src={PureGold} style={{width: 40, height: 40, marginTop: 5}}/>
+                <img
+                  src={PureGold}
+                  style={{ width: 40, height: 40, marginTop: 5 }}
+                />
               </Box>
               <Typography variant="h6">Sally</Typography>
             </Toolbar>
