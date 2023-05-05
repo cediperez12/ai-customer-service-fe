@@ -20,7 +20,7 @@ import Conversation from "./Conversation";
 
 import loadingGif from "../assets/loading.gif";
 
-const API_KEY = "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";
+const API_KEY = "";
 
 export default function Chat() {
   // * Sample Data * ----------------
@@ -48,7 +48,7 @@ export default function Chat() {
     windowRef.current.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const getChimResponse = async (text) => {
+  const getChimResponse = async () => {
     if (newMessage !== "") {
       try {
         setIsLoading(true);
