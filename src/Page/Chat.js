@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react";
 import {
   Box,
   CssBaseline,
@@ -10,66 +10,84 @@ import {
   Toolbar,
   Fab,
   Divider,
-} from '@mui/material'
+} from "@mui/material";
 import {
   SupportAgent as SupportAgentIcon,
   ExpandMore as ExpandMoreIcon,
-} from '@mui/icons-material'
-import SendIcon from '@mui/icons-material/Send'
-import Conversation from './Conversation'
+} from "@mui/icons-material";
+import SendIcon from "@mui/icons-material/Send";
+import Conversation from "./Conversation";
 
-import axios from 'axios'
-import loadingGif from '../assets/loading.gif'
+import loadingGif from "../assets/loading.gif";
+
+const API_KEY = "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";
 
 export default function Chat() {
   // * Sample Data * ----------------
-  const [messages, setMessages] = React.useState([])
-  const [newMessage, setNewMessage] = React.useState('')
-  const [isLoading, setIsLoading] = React.useState(false)
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [messages, setMessages] = React.useState([]);
+  const [newMessage, setNewMessage] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const handleSendMessage = () => {
-    getChimResponse()
-    setNewMessage('')
-  }
+    getChimResponse();
+    setNewMessage("");
+  };
 
   // * Enter key bind  * ----------------
   const handleEnterKey = (event) => {
     if (event.keyCode === 13 && newMessage.length > 0) {
-      handleSendMessage()
+      handleSendMessage();
     }
-  }
+  };
 
   // * Auto scroll * ----------------
-  const windowRef = React.useRef()
+  const windowRef = React.useRef();
   React.useEffect(() => {
-    if (!windowRef.current) return
-    windowRef.current.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+    if (!windowRef.current) return;
+    windowRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const getChimResponse = async (text) => {
-    try {
-      setIsLoading(true)
-      const response = await axios.get(
-        `https://test-chim-ai-deploy.herokuapp.com/askchim?query=` + newMessage,
-        {
+    if (newMessage !== "") {
+      try {
+        setIsLoading(true);
+        const message =
+          "Act as a customer support of Puregold Philippines, " + newMessage;
+
+        const apiRequestBody = {
+          model: "gpt-3.5-turbo",
+          messages: [{ role: "user", content: message }],
+        };
+
+        await fetch("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
           headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': '69420',
+            Authorization: "Bearer " + API_KEY,
+            "Content-Type": "application/json",
           },
-        }
-      )
-      console.log('response', response.data)
-      setMessages([...messages, response.data])
-      setIsLoading(false)
-    } catch (error) {
-      console.log('error', error)
-      setIsLoading(false)
-    } finally {
-      setIsLoading(false)
+          body: JSON.stringify(apiRequestBody),
+        })
+          .then((data) => {
+            return data.json();
+          })
+          .then((data) => {
+            const chat = {
+              query: newMessage,
+              response: data.choices[0].message.content,
+            };
+
+            setMessages([...messages, chat]);
+          });
+        setIsLoading(false);
+      } catch (error) {
+        console.log("error", error);
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
+      }
     }
-  }
+  };
 
   // React.useEffect(() => {
   //   console.log(messages);
@@ -80,17 +98,17 @@ export default function Chat() {
       <CssBaseline />
       <Fab
         onClick={() => {
-          setIsOpen((current) => !current)
+          setIsOpen((current) => !current);
         }}
         sx={{
-          position: 'fixed',
+          position: "fixed",
           bottom: 16,
           right: 16,
           zIndex: 1000,
-          backgroundColor: '#014F41',
-          color: '#ffffff',
-          '&:hover': {
-            backgroundColor: '#014F41',
+          backgroundColor: "#014F41",
+          color: "#ffffff",
+          "&:hover": {
+            backgroundColor: "#014F41",
           },
         }}
       >
@@ -101,31 +119,31 @@ export default function Chat() {
         <Box
           boxShadow={2}
           sx={{
-            position: 'fixed',
+            position: "fixed",
             mb: 10,
             bottom: 0,
             right: 16,
-            transition: 'all 0.3s ease-in-out',
-            transform: `translateY(${isOpen ? 0 : '100%'})`,
-            display: 'flex',
+            transition: "all 0.3s ease-in-out",
+            transform: `translateY(${isOpen ? 0 : "100%"})`,
+            display: "flex",
             height: 500,
-            backgroundColor: '#ffffff',
+            backgroundColor: "#ffffff",
             width: 350,
-            flexDirection: 'column',
-            overflow: 'hidden',
-            borderRadius: '20px 20px 10px 10px',
+            flexDirection: "column",
+            overflow: "hidden",
+            borderRadius: "20px 20px 10px 10px",
           }}
         >
           <AppBar position="static" color="transparent" elevation={0}>
             <Toolbar
               style={{
-                backgroundColor: '#014F41',
-                color: '#ffffff',
-                borderRadius: '20px 20px 0px 0px',
+                backgroundColor: "#014F41",
+                color: "#ffffff",
+                borderRadius: "20px 20px 0px 0px",
               }}
             >
               <Box sx={{ mr: 2 }}>
-                <SupportAgentIcon fontSize={'large'} />
+                <SupportAgentIcon fontSize={"large"} />
               </Box>
               <Typography variant="h6">Chat Support</Typography>
             </Toolbar>
@@ -134,11 +152,11 @@ export default function Chat() {
           {/* ---------------- *  Conversation  * ---------------- */}
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
+              display: "flex",
+              flexDirection: "column",
               height: 700,
-              overflow: 'hidden',
-              overflowY: 'scroll',
+              overflow: "hidden",
+              overflowY: "scroll",
             }}
           >
             <Conversation messages={messages} />
@@ -154,7 +172,7 @@ export default function Chat() {
             value={newMessage}
             onKeyDown={handleEnterKey}
             onChange={(e) => {
-              setNewMessage(e.target.value)
+              setNewMessage(e.target.value);
             }}
             InputProps={{
               disableUnderline: true,
@@ -172,7 +190,7 @@ export default function Chat() {
                       />
                     ) : (
                       <SendIcon
-                        style={{ color: newMessage ? '#014F41' : '#828F8D' }}
+                        style={{ color: newMessage ? "#014F41" : "#828F8D" }}
                       />
                     )}
                   </IconButton>
@@ -183,5 +201,5 @@ export default function Chat() {
         </Box>
       )}
     </React.Fragment>
-  )
+  );
 }
