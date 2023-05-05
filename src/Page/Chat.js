@@ -8,6 +8,8 @@ import {
   IconButton,
   AppBar,
   Toolbar,
+  Fab,
+  Divider,
 } from '@mui/material'
 import {
   SupportAgent as SupportAgentIcon,
@@ -76,27 +78,28 @@ export default function Chat() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <IconButton
+      <Fab
         onClick={() => {
           setIsOpen((current) => !current)
         }}
-        size="large"
         sx={{
           position: 'fixed',
           bottom: 16,
           right: 16,
           zIndex: 1000,
           backgroundColor: '#014F41',
-          color: '#fff',
+          color: '#ffffff',
           '&:hover': {
             backgroundColor: '#014F41',
           },
         }}
       >
         {isOpen ? <ExpandMoreIcon /> : <SupportAgentIcon />}
-      </IconButton>
+      </Fab>
+
       {isOpen && (
         <Box
+          boxShadow={2}
           sx={{
             position: 'fixed',
             mb: 10,
@@ -106,16 +109,19 @@ export default function Chat() {
             transform: `translateY(${isOpen ? 0 : '100%'})`,
             display: 'flex',
             height: 500,
-            backgroundColor: '#f9f9f5',
+            backgroundColor: '#ffffff',
             width: 350,
             flexDirection: 'column',
             overflow: 'hidden',
+            borderRadius: '20px 20px 10px 10px',
           }}
         >
-          <AppBar position="static">
+          <AppBar position="static" color="transparent" elevation={0}>
             <Toolbar
               style={{
                 backgroundColor: '#014F41',
+                color: '#ffffff',
+                borderRadius: '20px 20px 0px 0px',
               }}
             >
               <Box sx={{ mr: 2 }}>
@@ -128,7 +134,6 @@ export default function Chat() {
           {/* ---------------- *  Conversation  * ---------------- */}
           <Box
             sx={{
-              mb: 2,
               display: 'flex',
               flexDirection: 'column',
               height: 700,
@@ -139,23 +144,23 @@ export default function Chat() {
             <Conversation messages={messages} />
             <div ref={windowRef} />
           </Box>
-
+          <Divider />
           <TextField
-            sx={{ color: '#ffffff', mt: '1px', py: 1, px: 1 }}
+            variant="standard"
+            placeholder="Type a message here"
+            sx={{ padding: 2 }}
             className="textField"
             disabled={isLoading ? true : false}
             value={newMessage}
             onKeyDown={handleEnterKey}
-            label="Chat here"
-            fullWidth
             onChange={(e) => {
               setNewMessage(e.target.value)
             }}
             InputProps={{
+              disableUnderline: true,
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
-                    edge="start"
                     onClick={handleSendMessage}
                     disabled={newMessage ? false : true}
                   >
