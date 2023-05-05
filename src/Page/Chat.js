@@ -19,7 +19,9 @@ import {
 import SendIcon from '@mui/icons-material/Send'
 import Conversation from './Conversation'
 
-import loadingGif from '../assets/loading.gif'
+import loadingGif from '../assets/loading.gif';
+import PureGold from '../assets/ai_icon.png';
+
 
 export default function Chat() {
   // * Sample Data * ----------------
@@ -30,6 +32,7 @@ export default function Chat() {
 
   useEffect(() => {
     console.log(process.env)
+    setMessages([...messages,{ response: 'Hello and welcome to Puregold Philippines customer support! How may I assist you today?' }])
   }, [])
 
   const handleSendMessage = () => {
@@ -113,7 +116,7 @@ export default function Chat() {
           backgroundColor: '#014F41',
           color: '#ffffff',
           '&:hover': {
-            backgroundColor: '#014F41',
+            backgroundColor: '#E0DF09',
           },
         }}
       >
@@ -148,9 +151,9 @@ export default function Chat() {
               }}
             >
               <Box sx={{ mr: 2 }}>
-                <SupportAgentIcon fontSize={'large'} />
+                <img src={PureGold} style={{width: 40, height: 40, marginTop: 5}}/>
               </Box>
-              <Typography variant="h6">Chat Support</Typography>
+              <Typography variant="h6">Sally</Typography>
             </Toolbar>
           </AppBar>
 
